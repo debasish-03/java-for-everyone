@@ -33,6 +33,7 @@ class CpuTask implements Runnable {
         for (int i = 0; i < 200_000_000; i++) {
             sum += i;
         }
+        System.out.println(sum);
     }
 }
 

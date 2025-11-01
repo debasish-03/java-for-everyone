@@ -42,7 +42,7 @@ public class CollectorsDemo {
         System.out.println("Average: " + average);
 
         // 7. Counting Elements
-        Long count = numbers.stream().filter(x -> x % 2 == 0).collect(Collectors.counting());
+        long count = numbers.stream().filter(x -> x % 2 == 0).count();
         System.out.println("Count: " + count);
 
         // 8. Grouping Elements
@@ -59,7 +59,7 @@ public class CollectorsDemo {
 
         // 10. Mapping and Collecting
         // Applies a mapping function before collecting
-        System.out.println(words.stream().collect(Collectors.mapping(x -> x.toUpperCase(), Collectors.toList())));
+        System.out.println(words.stream().map(String::toUpperCase).collect(Collectors.toList()));
 
         // 11. toMap
 
@@ -81,15 +81,15 @@ public class CollectorsDemo {
         items.put("Banana", 20);
         items.put("Orange", 15);
         System.out.println(items.values().stream().reduce(Integer::sum));
-        System.out.println(items.values().stream().collect(Collectors.summingInt(x -> x)));
+        System.out.println((Integer) items.values().stream().mapToInt(x -> x).sum());
 
         // Example 5: Creating a Map from Stream Elements
         List<String> fruits = Arrays.asList("Apple", "Banana", "Cherry");
-        System.out.println(fruits.stream().collect(Collectors.toMap(x -> x.toUpperCase(), x -> x.length())));
+        System.out.println(fruits.stream().collect(Collectors.toMap(String::toUpperCase, String::length)));
 
         // Example 6:
         List<String> words2 = Arrays.asList("apple", "banana", "apple", "orange", "banana", "apple");
-        System.out.println(words2.stream().collect(Collectors.toMap(k -> k, v -> 1, (x, y) -> x + y)));;
+        System.out.println(words2.stream().collect(Collectors.toMap(k -> k, v -> 1, Integer::sum)));;
 
 
     }
