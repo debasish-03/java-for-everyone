@@ -79,7 +79,42 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ConditionProducerConsumerExample {
     public static void main(String[] args) {
+        SharedBufferData<Integer> buffer = new SharedBufferData<>(3);
 
+        Runnable producer = () -> {
+            for (int i = 1; i <= 10; i++) {
+                try {
+                    buffer.produce(i);
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        };
+
+        Runnable consumer = () -> {
+            for (int i = 1; i <= 10; i++) {
+                try {
+                    buffer.consume();
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+
+            }
+        };
+
+
+        Thread producer1 = new Thread(producer, "Producer-1");
+        Thread producer2 = new Thread(producer, "Producer-2");
+        Thread consumer1 = new Thread(consumer, "Consumer-1");
+        Thread consumer2 = new Thread(consumer, "Consumer-2");
+
+        producer1.start();
+        consumer1.start();
+
+//        producer2.start();
+//        consumer2.start();
     }
 }
 
@@ -127,42 +162,4 @@ class SharedBufferData<T> {
         }
     }
 
-    public static void main(String[] args) {
-        SharedBufferData<Integer> buffer = new SharedBufferData<>(3);
-
-        Runnable producer = () -> {
-            for (int i = 1; i <= 10; i++) {
-                try {
-                    buffer.produce(i);
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        };
-
-        Runnable consumer = () -> {
-            for (int i = 1; i <= 10; i++) {
-                try {
-                    buffer.consume();
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
-            }
-        };
-
-
-        Thread producer1 = new Thread(producer, "Producer-1");
-        Thread producer2 = new Thread(producer, "Producer-2");
-        Thread consumer1 = new Thread(consumer, "Consumer-1");
-        Thread consumer2 = new Thread(consumer, "Consumer-2");
-
-        producer1.start();
-        consumer1.start();
-
-//        producer2.start();
-//        consumer2.start();
-    }
 }
